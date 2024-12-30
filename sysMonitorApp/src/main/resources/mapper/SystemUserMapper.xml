@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.swust.sysmonitorapp.mapper.SystemUserMapper">
+    <select id="pageUser" resultType="org.swust.sysmonitorapp.entity.SysUserDto">
+        SELECT system_user.*, dept.name AS dept_name, r.role_name
+        FROM system_user
+        LEFT JOIN system_dept dept ON system_user.depid = dept.id
+        LEFT JOIN system_role r ON system_user.roleid = r.role_id
+        <where>
+            <if test="param.username != null and param.username != ''">
+                and u.username like concat('%', #{param.username}, '%')
+            </if>
+            <if test="param.sex != null and param.sex != ''">
+                and u.sex like concat('%', #{param.sex}, '%')
+            </if>
+            <if test="param.depid != null">
+                and u.depid = #{param.depid}
+            </if>
+            <if test="param.useid != null">
+                and u.useid = #{param.useid}
+            </if>
+        </where>
+    </select>
+
+</mapper>
